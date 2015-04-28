@@ -1,0 +1,22 @@
+FASE 1
+
+- Casdastrar clientes
+  - Tipo de cliente (Particular ou convênio)
+  - Anaminese
+  - Até dois profissionais por cliente -> Tipo de atendimento(Psicologia, Psicopedagogia ou avaliação)
+  - Somente uma pessoa poderá adicionar clientes (manager role)
+
+- Lista de frequência
+  - Dia da consulta, profissional, campo para descrição do atendimeto
+  - Tem que ser independente, pois, em caso de questionamento do paciente, será verificado os dois
+
+- Cadastrar profissionais
+
+- Agenda
+  - Tem que ter uma forma de verificar quantas vezes o cliente veio e quando
+  - Acessar a lista de frequência e verificar se bate ou não com a agenda
+
+- Tipos de atendimento
+  - Criança
+  - Adelescente
+  - Idoso 

@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "hugomiranda",
+    "password": null,
+    "database": "aionmanager_server_development",
+    "host": "localhost",
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "hugomiranda",
+    "password": null,
+    "database": "aionmanager_server_test",
+    "host": "localhost",
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "root",
+    "password": null,
+    "database": "aionmanager_server",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  }
+}

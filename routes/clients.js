@@ -6,6 +6,17 @@ var router = express.Router();
 router.use(auth_user);
 
 router.route("/")
+	.get(function(req, resp){
+		req.user.getCompany().then(function(company){
+			if(company){
+				company.getClients().then(function(clients){
+					resp.status(200).json(clients);
+				});
+			}else{
+				resp.status(422).json({message: "error"});
+			}
+		});
+	})
 	.post(function(req, resp){
 
 		req.user.getCompany().then(function(company){
@@ -19,17 +30,6 @@ router.route("/")
 			}
 		});
 
-	})
-	.get(function(req, resp){
-		req.user.getCompany().then(function(company){
-			if(company){
-				company.getClients().then(function(clients){
-					resp.status(200).json(clients);
-				});
-			}else{
-				resp.status(422).json({message: "error"});
-			}
-		});
 	});
 
 module.exports = router;

@@ -2,7 +2,7 @@ var models = require('../models');
 var express = require('express');
 var router = express.Router();
 
-router.route("/companies")
+router.route("/")
 	.post(function(req, resp){
 
 		var company = models.Company.build(req.body.company);
@@ -16,13 +16,13 @@ router.route("/companies")
 				}else{
 
 					user.validate()
-						.then(function(errr){
-							if(errr){
+						.then(function(err){
+							if(err){
 								resp.status(422).json({message: err});
 							}else{
 								company.save()
 									.then(function(company){
-										company.addUser(user);
+										company.addUsers(user);
 										resp.status(201).json(company);
 									});
 							}

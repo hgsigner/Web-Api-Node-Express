@@ -5,11 +5,30 @@ var router = express.Router();
 
 router.use(auth_user);
 
+/*
+ 
+ endpoints: 
+	
+	get => 
+		all users:
+			/api/v1/users
+		users by fields: 
+			/api/v1/users?role=master|manager|colaborator
+	
+	post => /api/v1/users
+
+	patch => /api/v1/users/:user_id
+
+*/
+
 router.route("/")
 	.get(function(req, resp){
 		req.user.getCompany().then(function(company){
 			if(company){
-				company.getUsers().then(function(users){
+				var query = JSON.parse(JSON.stringify(req.query));
+				company.getUsers({
+					where: query
+				}).then(function(users){
 					resp.status(200).json(users);
 				});
 			}else{
@@ -56,16 +75,43 @@ router.route("/:user_id")
 
 			company.getUsers({
 				where: {id: req.params.user_id}
-			}).then(function(user){
-				if(user.length){
-					user[0].update(req.body)
+			}).then(function(users){
+				if(users.length){
+					users[0].update(req.body)
 						.then(function(user){
-							if(user){
-								resp.status(200).json(user);
-							}else{
-								resp.status(422).json({message: error});
-							}
+							resp.status(200).json(user);
+						})
+						.catch(function(error){
+							resp.status(422).json({message: error});
 						});
+				}else{
+					resp.status(404).json({message: "User not found"});
+				}
+			});
+
+		});
+
+	})
+	.delete(function(req, resp){
+
+		var req_id = parseInt(req.params.user_id);
+		var current_user_id = parseInt(req.user.id);
+
+		console.log(req_id, current_user_id);
+
+		req.user.getCompany().then(function(company){
+
+			company.getUsers({
+				where: {id: req_id}
+			}).then(function(users){
+				if(users.length){
+					if(current_user_id != req_id){
+						users[0].destroy().then(function(){
+							resp.status(200).json({message: "User deleted"});
+						});
+					}else{
+						resp.status(403).json({message: "Forbidden action"});
+					}
 				}else{
 					resp.status(404).json({message: "User not found"});
 				}

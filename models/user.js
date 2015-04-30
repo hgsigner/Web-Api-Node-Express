@@ -48,7 +48,7 @@ module.exports = function(sequelize, DataTypes) {
       beforeCreate: function(user, options, fn){
         user.access_token = require('crypto').randomBytes(48).toString('base64');
         fn(null, user);
-      }
+      },
     }
   });
   return User;

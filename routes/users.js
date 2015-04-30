@@ -32,4 +32,47 @@ router.route("/")
 
 	});
 
+router.route("/:user_id")
+	.get(function(req, resp){
+
+		req.user.getCompany().then(function(company){
+
+			company.getUsers({
+				where: {id: req.params.user_id}
+			}).then(function(user){
+				if(user.length){
+					resp.status(200).json(user);
+				}else{
+					resp.status(404).json({message: "User not found"});
+				}
+			});
+
+		});
+
+	})
+	.patch(function(req, resp){
+
+		req.user.getCompany().then(function(company){
+
+			company.getUsers({
+				where: {id: req.params.user_id}
+			}).then(function(user){
+				if(user.length){
+					user[0].update(req.body)
+						.then(function(user){
+							if(user){
+								resp.status(200).json(user);
+							}else{
+								resp.status(422).json({message: error});
+							}
+						});
+				}else{
+					resp.status(404).json({message: "User not found"});
+				}
+			});
+
+		});
+
+	})
+
 module.exports = router;

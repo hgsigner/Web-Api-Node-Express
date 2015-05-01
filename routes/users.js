@@ -45,8 +45,11 @@ router.route("/")
 		req.user.getCompany().then(function(company){
 			if(company){
 				var user = models.User.build(req.body);
-				company.addUser(user).then(function(user){
+				company.addUser(user)
+				.then(function(user){
 					resp.status(201).json(user);
+				}).catch(function(error){
+					resp.status(400).json({message: error});
 				});
 			}else{
 				resp.status(404).json({message: "Company not found"});

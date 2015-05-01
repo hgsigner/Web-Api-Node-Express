@@ -103,7 +103,16 @@ module.exports = function(sequelize, DataTypes) {
     },
     forwarded_by: DataTypes.STRING,
     interviewed_at: DataTypes.DATE,
-    additional_info: DataTypes.JSON
+    additional_info: {
+      /*
+      {
+        "secondary": "klsjdflksdj",
+        "relationship": "friend",
+        "phone": "059834098"
+      }
+      */
+      type: DataTypes.JSON
+    }
   }, {
     underscored: true,
     validate: {

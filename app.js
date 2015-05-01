@@ -8,6 +8,7 @@ var bodyParser = require('body-parser');
 
 //Include routes
 
+var appsession = require('./routes/session');
 var companies = require('./routes/companies');
 var users = require('./routes/users');
 var clients = require('./routes/clients');
@@ -25,6 +26,7 @@ app.set('x-powered-by', false);
 
 //Set router
 
+app.use('/api/v1/session', appsession);
 app.use('/api/v1/companies', companies);
 app.use('/api/v1/users', users);
 app.use('/api/v1/clients', clients);

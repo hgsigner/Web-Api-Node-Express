@@ -19,10 +19,13 @@ router.use(auth_user);
 
 	patch => /api/v1/users/:user_id
 
+	delete => /api/v1/users/:user_id
+
 */
 
 router.route("/")
 	.get(function(req, resp){
+
 		req.user.getCompany().then(function(company){
 			if(company){
 				var query = JSON.parse(JSON.stringify(req.query));
@@ -35,17 +38,18 @@ router.route("/")
 				resp.status(422).json({message: "error"});
 			}
 		});
+
 	})
 	.post(function(req, resp){
 
 		req.user.getCompany().then(function(company){
 			if(company){
-				var client = models.User.build(req.body);
-				company.addUser(client).then(function(user){
+				var user = models.User.build(req.body);
+				company.addUser(user).then(function(user){
 					resp.status(201).json(user);
 				});
 			}else{
-				resp.status(422).json({message: "error"});
+				resp.status(404).json({message: "Company not found"});
 			}
 		});
 
@@ -58,9 +62,9 @@ router.route("/:user_id")
 
 			company.getUsers({
 				where: {id: req.params.user_id}
-			}).then(function(user){
-				if(user.length){
-					resp.status(200).json(user);
+			}).then(function(users){
+				if(users.length){
+					resp.status(200).json(users[0]);
 				}else{
 					resp.status(404).json({message: "User not found"});
 				}
@@ -105,7 +109,7 @@ router.route("/:user_id")
 				where: {id: req_id}
 			}).then(function(users){
 				if(users.length){
-					if(current_user_id != req_id){
+					if(current_user_id !== req_id){
 						users[0].destroy().then(function(){
 							resp.status(200).json({message: "User deleted"});
 						});

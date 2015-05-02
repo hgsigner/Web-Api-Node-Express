@@ -55,6 +55,13 @@ module.exports = function(sequelize, DataTypes) {
       },
       authenticate: function(pwd){
         return bcrypt.compareSync(pwd, this.password);
+      },
+      toJSON: function(){
+        var values = this.get();
+        if(values.password){
+          delete values.password;
+        }
+        return values;
       }
     },
     hooks: {

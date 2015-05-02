@@ -5,7 +5,7 @@ var router = express.Router();
 router.route("/authenticate")
 	.post(function (req, resp) {
 		user.find({
-			where: {email: req.body.email}
+			where: {email: req.body.email},
 		}).then(function(user){
 			if(user){
 				if(user.authenticate(req.body.password)){

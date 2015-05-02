@@ -1,40 +1,8 @@
 var expect = require('chai').expect;
 var app = require("../../app");
 var models = require("../../models");
+var testNoAuthUser = require("../utils/test_no_authenticated_user");
 var request = require('supertest')(app);
-
-function testNoAuthenticetedUser(url, method){
-	switch(method){
-		case "get": 
-			it("return 404 mith no access_token", function(done){
-				request
-					.get(url)
-					.expect(404, done);
-			});
-			break;
-		case "post":
-			it("return 404 mith no access_token", function(done){
-				request
-					.post(url)
-					.expect(404, done);
-			});
-			break;
-		case "patch":
-			it("return 404 mith no access_token", function(done){
-				request
-					.patch(url)
-					.expect(404, done);
-			});
-			break;
-		case "delete":
-			it("return 404 mith no access_token", function(done){
-				request
-					.delete(url)
-					.expect(404, done);
-			});
-			break;
-	}
-}
 
 describe('User root routes', function(){
 
@@ -76,7 +44,7 @@ describe('User root routes', function(){
 
 	context("#GET", function(){
 
-		testNoAuthenticetedUser("/api/v1/users", "get");
+		testNoAuthUser("/api/v1/users", "get");
 
 		it("gets users list with access_token", function(done){
 			request
@@ -89,7 +57,7 @@ describe('User root routes', function(){
 
 	context("#POST", function(){
 
-		testNoAuthenticetedUser("/api/v1/users", "post");
+		testNoAuthUser("/api/v1/users", "post");
 
 		it("creates a new user", function(done){
 			request
@@ -97,6 +65,25 @@ describe('User root routes', function(){
 				.set("App-Access-Token", user.access_token)
 				.send(managerUser).expect(201, done);
 		});
+
+		it("cant create users with the same email", function(done){
+			
+			var _params = {
+				first_name: "Flora",
+		    last_name: "Dorea",
+		    email: "manager@test2.com",
+		    role: "manager",
+		    password: "test"
+			};
+
+			var _user = models.User.build(_params);
+			company.addUser(_user);
+			
+			request
+				.post("/api/v1/users")
+				.set("App-Access-Token", user.access_token)
+				.send(_params).expect(400, done);
+		})
 
 	});
 

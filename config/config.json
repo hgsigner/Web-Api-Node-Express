@@ -11,13 +11,15 @@
     "password": null,
     "database": "aionmanager_server_test",
     "host": "localhost",
-    "dialect": "postgres"
+    "dialect": "postgres",
+    "logging" : false
   },
   "production": {
     "username": "root",
     "password": null,
     "database": "aionmanager_server",
     "host": "127.0.0.1",
-    "dialect": "postgres"
+    "dialect": "postgres",
+    "logging" : false
   }
 }

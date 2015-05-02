@@ -4,8 +4,9 @@
   "private": true,
   "scripts": {
     "start": "nodemon ./bin/www",
-    "test": "NODE_ENV=test mocha test/**/*.js",
-    "db": "sequelize --env test db:migrate"
+    "test": "NODE_ENV=test mocha -R spec --recursive",
+    "db:migrate": "sequelize db:migrate",
+    "db:migrate:test": "sequelize --env test db:migrate"
   },
   "dependencies": {
     "bcrypt": "^0.8.2",

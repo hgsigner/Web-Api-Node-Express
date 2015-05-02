@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "nodemon ./bin/www",
-    "test": "mocha test/**/*.js",
+    "test": "NODE_ENV=test mocha test/**/*.js",
     "db": "sequelize --env test db:migrate"
   },
   "dependencies": {
